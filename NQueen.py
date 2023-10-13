@@ -35,3 +35,41 @@ def solve_n_queens(n):
         return board
     else:
         return None
+    
+
+def update_solution_text(board):
+    solution_text.config(state=tk.NORMAL)
+    solution_text.delete(1.0, tk.END)
+    if board is None:
+        solution_text.insert(tk.END, "No solution found.")
+    else:
+        for row in board:
+            centered_row = "".join("Q" if x == 1 else "." for x in row)
+            space_padding = " " * ((len(board) - len(centered_row)) // 2)
+            centered_row = space_padding + centered_row + space_padding
+            solution_text.insert(tk.END, centered_row + "\n")
+    solution_text.config(state=tk.DISABLED)
+
+def solve_and_display_solution(*args):
+    n = int(entry.get())
+    final_solution = solve_n_queens(n)
+    update_solution_text(final_solution)
+
+window = tk.Tk()
+window.title("N-Queens")
+
+label = tk.Label(window, text="Enter Chessboard Size (N):")
+label.pack(pady = 10)
+
+entry = tk.Entry(window)
+entry.pack(pady = 5)
+
+solve_button = tk.Button(window, text="Solve", command=solve_and_display_solution)
+solve_button.pack(pady = 10)
+
+solution_text = tk.Text(window, height=10, width=30, state=tk.DISABLED)
+solution_text.pack(pady = 10)
+
+entry.bind('<Return>', solve_and_display_solution)
+
+window.mainloop()
