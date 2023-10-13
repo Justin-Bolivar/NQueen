@@ -17,3 +17,21 @@ def is_safe(board, row, col):
         i -= 1
         j += 1
     return True
+
+def solve_n_queens(n):
+    def solve_recursively(board, row):
+        if row == n:
+            return True
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row][col] = 1
+                if solve_recursively(board, row + 1):
+                    return True
+                board[row][col] = 0
+        return False
+
+    board = [[0] * n for _ in range(n)]
+    if solve_recursively(board, 0):
+        return board
+    else:
+        return None
